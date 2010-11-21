@@ -1,6 +1,5 @@
 /*
-	SFSM
-	Scriptable Finite State Machine
+	SFSM (Scriptable Finite State Machine)
 
 	A finate state machine executor written in C,
 	which runs FSMs specified in *.fsm scripts.
