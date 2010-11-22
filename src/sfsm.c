@@ -11,9 +11,9 @@
 #include <stdio.h>
 #include "xplatform.h"
 
-void loadStateMachine(char *file);
+#define MAXL 100
 
-FILE *pFile;
+void loadStateMachine(char *file);
 
 int main(int argc, char *argv[]) {
 	if(argc < 2) {
@@ -29,9 +29,12 @@ int main(int argc, char *argv[]) {
 }
 
 void loadStateMachine(char *file) {
-	char *line;
+	FILE *pFile;
+	char line[MAXL + 1];
 	pFile = fopen(file, "r");
 	if(pFile != NULL) {
-		fgets(
+		while(fgets(line, MAXL + 1, pFile) != NULL) {
+			puts(line);
+		}
 	}
 }
