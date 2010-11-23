@@ -1,0 +1,33 @@
+;
+; Traffic lights finite state machine
+; samples/traffic.fsm
+;
+:define sequence
+	RED; RED_AMBER; AMBER; GREEN
+
+:delay
+	4000
+
+:repeat
+	true
+
+:state RED
+	echo "{R}"
+	echo " A "
+	echo " G "
+
+:state RED_AMBER
+	echo "{R}"
+	echo "{A}"
+	echo " G "
+
+:state AMBER
+	echo " R "
+	echo "{A}"
+	echo " G "
+
+:state GREEN
+	echo " R "
+	echo " A "
+	echo "{G}"
+

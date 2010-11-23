@@ -9,11 +9,18 @@
 	Please see LICENSE file.
 */
 #include <stdio.h>
+#include <string.h>
 #include "xplatform.h"
 
-#define MAXL 100
+#define MAXLINES 1000
+#define MAXLEN 100
 
-void loadStateMachine(char *file);
+int numLines;
+char lines[MAXLINES][MAXLEN];
+
+void loadFSM(char *file);
+void parseFSM(void);
+void executeFSM(void);
 
 int main(int argc, char *argv[]) {
 	if(argc < 2) {
@@ -24,17 +31,27 @@ int main(int argc, char *argv[]) {
 		printf("\nUsage: sfsm <fsm script>\n");
 		#endif
 	}
-	else loadStateMachine(argv[1]);
+	else loadFSM(argv[1]);
 	return 0;
 }
 
-void loadStateMachine(char *file) {
+void loadFSM(char *file) {
 	FILE *pFile;
-	char line[MAXL + 1];
+	char line[MAXLEN];
 	pFile = fopen(file, "r");
 	if(pFile != NULL) {
-		while(fgets(line, MAXL + 1, pFile) != NULL) {
-			puts(line);
+		int i = 0;
+		while(fgets(line, MAXLEN, pFile) != NULL) {
+			strcpy(lines[i], line);
+			i++;
+			numLines++;
 		}
 	}
+	parseFSM();
 }
+
+void parseFSM(void) {
+	int i;
+	for(i = 0; i < numLines; i++) puts(lines[i]);
+}
+
