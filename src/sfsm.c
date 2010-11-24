@@ -18,6 +18,12 @@
 int numLines;
 char lines[MAXLINES][MAXLEN];
 
+struct fsm {
+	char *sequence;
+};
+
+struct fsm theMachine;
+
 void loadFSM(char *file);
 void parseFSM(void);
 void executeFSM(void);
@@ -42,7 +48,7 @@ void loadFSM(char *file) {
 	if(pFile != NULL) {
 		int i = 0;
 		while(fgets(line, MAXLEN, pFile) != NULL) {
-			strcpy(lines[i], line);
+			strcpy(lines[i], strtrim(line));
 			i++;
 			numLines++;
 		}
@@ -51,7 +57,10 @@ void loadFSM(char *file) {
 }
 
 void parseFSM(void) {
-	int i;
-	for(i = 0; i < numLines; i++) puts(lines[i]);
+	int i, match;
+	for(i = 0; i < numLines; i++) {
+		if(strcmp(lines[i], ":define sequence") == 0) {
+			theMachine.sequence = lines[i+1];
+		}
+	}
 }
-

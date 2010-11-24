@@ -16,6 +16,7 @@
 // Function prototypes
 void xsleep(int ms);
 void xcls(void);
+char *strtrim(char *str);
 
 // Function to pause execution of program 
 // for so many milliseconds.
@@ -34,4 +35,25 @@ void xcls(void) {
 #else
 	system("clear"); // *NIX -> CLEAR
 #endif
+}
+
+// Function to trim white space around a string
+// Obtained from: http://bit.ly/ght9jT
+char *strtrim(char *str) {
+	char *end;
+
+  	// Trim leading space
+  	while(isspace(*str)) str++;
+  	
+  	if(*str == 0)  // All spaces?
+    	return str;
+
+  	// Trim trailing space
+  	end = str + strlen(str) - 1;
+  	while(end > str && isspace(*end)) end--;
+
+  	// Write new null terminator
+  	*(end+1) = 0;
+
+  	return str;
 }
