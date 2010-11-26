@@ -23,7 +23,7 @@ struct stateMachine {
 	char *sequence;
 	int delay;
 	int repeat;
-	char *state;
+	char state[MAXLINES][MAXLEN];
 };
 
 struct stateMachine fsm;
@@ -65,10 +65,11 @@ void loadFSM(char *file) {
 
 // Parse the FSM script into the FSM structure
 void parseFSM(void) {
-	int i, x, match;
+	int i, match;
+	int x = 0; int z = 0;
 	char *s;
 	for(i = 0; i < numLines; i++) {
-		if(strcmp(lines[i], ":define sequence") == 0) {
+		if(strcmp(lines[i], ":sequence") == 0) {
 			fsm.sequence = lines[i+1];
 		}
 		else if(strcmp(lines[i], ":delay") == 0) {
@@ -78,16 +79,25 @@ void parseFSM(void) {
 			fsm.repeat = atoi(lines[i+1]);
 		}
 		else if(strcmp(lines[i], ":state") == 0) {
-			strcat(s, lines[i+1]);
-			puts(s);
+			i++; x++;
+			while(strcmp(lines[i], ".") != 0) {
+				sprintf(s, "%i", x);
+				strcat(s, lines[i]);
+				strcpy(fsm.state[z], s);
+				i++; z++;
+			}
 		}
 	}
-	dumpFSM();
 }
 
-// Dump the loaded FSM internals
+// Execute the FSM
+void executeFSM(void) {
+	
+}
+
+// DEBUG: Dump the loaded FSM internals
 void dumpFSM(void) {
-	printf("FSM sequence: %s\n", fsm.sequence);
-	printf("FSM delay (ms): %i\n", fsm.delay);
-	printf("FSM repeat (1/0): %i\n", fsm.repeat);
+	printf("FSM sequence: %s", fsm.sequence);
+	printf("\nFSM delay (ms): %i", fsm.delay);
+	printf("\nFSM repeat (1/0): %i\n", fsm.repeat);
 }

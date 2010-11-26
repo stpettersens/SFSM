@@ -2,7 +2,7 @@
 ; Traffic lights finite state machine
 ; samples/traffic.fsm
 ;
-:define sequence
+:sequence
 	1,2,3,4
 
 :delay
