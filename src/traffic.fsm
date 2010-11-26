@@ -3,31 +3,38 @@
 ; samples/traffic.fsm
 ;
 :define sequence
-	RED; RED_AMBER; AMBER; GREEN
+	1,2,3,4
 
 :delay
 	4000
 
 :repeat
-	true
+	1
 
-:state RED
+; RED
+:state
 	echo "{R}"
 	echo " A "
 	echo " G "
+.
 
-:state RED_AMBER
+; RED + AMBER
+:state
 	echo "{R}"
 	echo "{A}"
 	echo " G "
+.
 
-:state AMBER
-	echo " R "
-	echo "{A}"
-	echo " G "
-
-:state GREEN
+; GREEN
+:state
 	echo " R "
 	echo " A "
 	echo "{G}"
+.
 
+; AMBER
+:state
+	echo " R "
+	echo "{A}"
+	echo " G "
+.

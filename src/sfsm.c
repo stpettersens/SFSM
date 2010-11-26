@@ -9,6 +9,7 @@
 	Please see LICENSE file.
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "xplatform.h"
 
@@ -18,16 +19,21 @@
 int numLines;
 char lines[MAXLINES][MAXLEN];
 
-struct fsm {
+struct stateMachine {
 	char *sequence;
+	int delay;
+	int repeat;
+	char *state;
 };
 
-struct fsm theMachine;
+struct stateMachine fsm;
 
 void loadFSM(char *file);
 void parseFSM(void);
 void executeFSM(void);
+void dumpFSM(void);
 
+// Main method
 int main(int argc, char *argv[]) {
 	if(argc < 2) {
 		printf("SFSM (Scriptable Finite State Machine)");
@@ -41,6 +47,7 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+// Load the FSM script
 void loadFSM(char *file) {
 	FILE *pFile;
 	char line[MAXLEN];
@@ -48,7 +55,7 @@ void loadFSM(char *file) {
 	if(pFile != NULL) {
 		int i = 0;
 		while(fgets(line, MAXLEN, pFile) != NULL) {
-			strcpy(lines[i], strtrim(line));
+			strcpy(lines[i], xstrtrim(line));
 			i++;
 			numLines++;
 		}
@@ -56,11 +63,31 @@ void loadFSM(char *file) {
 	parseFSM();
 }
 
+// Parse the FSM script into the FSM structure
 void parseFSM(void) {
-	int i, match;
+	int i, x, match;
+	char *s;
 	for(i = 0; i < numLines; i++) {
 		if(strcmp(lines[i], ":define sequence") == 0) {
-			theMachine.sequence = lines[i+1];
+			fsm.sequence = lines[i+1];
+		}
+		else if(strcmp(lines[i], ":delay") == 0) {
+			fsm.delay = atoi(lines[i+1]);
+		}
+		else if(strcmp(lines[i], ":repeat") == 0) {
+			fsm.repeat = atoi(lines[i+1]);
+		}
+		else if(strcmp(lines[i], ":state") == 0) {
+			strcat(s, lines[i+1]);
+			puts(s);
 		}
 	}
+	dumpFSM();
+}
+
+// Dump the loaded FSM internals
+void dumpFSM(void) {
+	printf("FSM sequence: %s\n", fsm.sequence);
+	printf("FSM delay (ms): %i\n", fsm.delay);
+	printf("FSM repeat (1/0): %i\n", fsm.repeat);
 }

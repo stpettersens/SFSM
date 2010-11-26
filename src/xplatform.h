@@ -1,6 +1,6 @@
 /*
 	C/C++ header file implementing some
-	useful cross platform functions.
+	useful cross platform wrappers/functions.
 	
 	Public domain.
 	
@@ -16,9 +16,9 @@
 // Function prototypes
 void xsleep(int ms);
 void xcls(void);
-char *strtrim(char *str);
+char *xstrtrim(char *str);
 
-// Function to pause execution of program 
+// Wrapper function to pause execution of program 
 // for so many milliseconds.
 void xsleep(int ms) {
 #ifdef _WIN32
@@ -28,7 +28,7 @@ void xsleep(int ms) {
 #endif
 }
 
-// Function to clear the screen.
+// Wrapper function to clear the screen.
 void xcls(void) {
 #ifdef _WIN32
 	system("cls"); // WIN32 -> CLS
@@ -39,7 +39,7 @@ void xcls(void) {
 
 // Function to trim white space around a string
 // Obtained from: http://bit.ly/ght9jT
-char *strtrim(char *str) {
+char *xstrtrim(char *str) {
 	char *end;
 
   	// Trim leading space
