@@ -66,7 +66,8 @@ void loadFSM(char *file) {
 // Parse the FSM script into the FSM structure
 void parseFSM(void) {
 	int i, match;
-	int x = 0; int z = 0;
+	int x = 0;
+	int z = 0;
 	char *s;
 	for(i = 0; i < numLines; i++) {
 		if(strcmp(lines[i], ":sequence") == 0) {
@@ -81,13 +82,11 @@ void parseFSM(void) {
 		else if(strcmp(lines[i], ":state") == 0) {
 			i++; x++;
 			while(strcmp(lines[i], ".") != 0) {
-				sprintf(s, "%i", x);
-				strcat(s, lines[i]);
-				strcpy(fsm.state[z], s);
-				i++; z++;
+				
 			}
 		}
 	}
+	executeFSM();
 }
 
 // Execute the FSM
