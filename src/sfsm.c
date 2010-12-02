@@ -5,7 +5,7 @@
 	which runs FSMs specified in *.fsm scripts.
 
 	Copyright (c) 2010 Sam Saint-Pettersen.
-	Licensed under the MIT/X11 License.
+	Released under the MIT/X11 License.
 	Please see LICENSE file.
 */
 #include <stdio.h>
@@ -13,17 +13,16 @@
 #include <string.h>
 #include "xplatform.h"
 
-#define MAXLINES 1000
 #define MAXLEN 100
 
 int numLines;
-char lines[MAXLINES][MAXLEN];
+char lines[MAXLEN][MAXLEN];
 
 struct stateMachine {
 	char *sequence;
 	int delay;
 	int repeat;
-	char state[MAXLINES][MAXLEN];
+	char state[MAXLEN][MAXLEN][MAXLEN];
 };
 
 struct stateMachine fsm;
@@ -65,10 +64,8 @@ void loadFSM(char *file) {
 
 // Parse the FSM script into the FSM structure
 void parseFSM(void) {
-	int i, match;
-	int x = 0;
-	int z = 0;
-	char *s;
+	int counter = 0;
+	int i; int x = 1; int z = 0;
 	for(i = 0; i < numLines; i++) {
 		if(strcmp(lines[i], ":sequence") == 0) {
 			fsm.sequence = lines[i+1];
@@ -80,9 +77,12 @@ void parseFSM(void) {
 			fsm.repeat = atoi(lines[i+1]);
 		}
 		else if(strcmp(lines[i], ":state") == 0) {
-			i++; x++;
-			while(strcmp(lines[i], ".") != 0) {
-				
+			i++;
+			while(1) {		
+				if(strcmp(lines[i], "") == 0) break;
+				if(strcmp(lines[i], ".") == 0) x++;
+				strcpy(fsm.state[x][z], lines[i]);
+				z++; i++; counter++;
 			}
 		}
 	}
@@ -91,7 +91,7 @@ void parseFSM(void) {
 
 // Execute the FSM
 void executeFSM(void) {
-	
+	printf("%s\n", fsm.state[2][6]);
 }
 
 // DEBUG: Dump the loaded FSM internals
