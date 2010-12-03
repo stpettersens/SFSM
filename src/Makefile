@@ -2,8 +2,8 @@
 # Makefile for SFSM
 #
 make: sfsm.c
-	gcc -std=c99 -w -o sfsm sfsm.c
-	strip sfsm
+	gcc -std=c99 -w -o sfsm.exe sfsm.c
+	strip sfsm.exe
 
 clean:
-	rm -f sfsm
+	del sfsm.exe

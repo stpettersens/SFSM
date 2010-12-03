@@ -5,6 +5,9 @@
 :sequence
 	1,2,3,4
 
+:transitions
+	4
+
 :delay
 	4000
 
@@ -13,28 +16,28 @@
 
 ; RED
 :state
-	echo "{R}"
-	echo " A "
-	echo " G "
+	{R}
+	-A-
+	-G-
 .
 
 ; RED + AMBER
 :state
-	echo "{R}"
-	echo "{A}"
-	echo " G "
+	{R}
+	{A}
+	-G-
 .
 
 ; GREEN
 :state
-	echo " R "
-	echo " A "
-	echo "{G}"
+	-R-
+	-A-
+   	{G}
 .
 
 ; AMBER
 :state
-	echo " R "
-	echo "{A}"
-	echo " G "
+	-R-
+	{A}
+	-G-
 .

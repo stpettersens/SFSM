@@ -20,6 +20,7 @@ char lines[MAXLEN][MAXLEN];
 
 struct stateMachine {
 	char *sequence;
+	int transits;
 	int delay;
 	int repeat;
 	char state[MAXLEN][MAXLEN][MAXLEN];
@@ -69,13 +70,16 @@ void parseFSM(void) {
 		if(strcmp(lines[i], ":sequence") == 0) {
 			fsm.sequence = lines[++i];
 		}
-		else if(strcmp(lines[i], ":delay") == 0) {
+		if(strcmp(lines[i], ":delay") == 0) {
 			fsm.delay = atoi(lines[++i]);
 		}
-		else if(strcmp(lines[i], ":repeat") == 0) {
+		if(strcmp(lines[i], ":transitions") == 0) {
+			fsm.transits = atoi(lines[++i]);
+		}
+		if(strcmp(lines[i], ":repeat") == 0) {
 			fsm.repeat = atoi(lines[++i]);
 		}
-		else if(strcmp(lines[i], ":state") == 0) {
+		if(strcmp(lines[i], ":state") == 0) {
 			i++;
 			while(1) {  
   				strcpy(fsm.state[x][z], lines[i]);
@@ -90,17 +94,19 @@ void parseFSM(void) {
 			}
 		}
 	}
-	printf("Test %s\n", fsm.state[2][0]);
 	executeFSM();
 }
 
 // Execute the FSM
 void executeFSM(void) {
-	int x = 1; int z = 1;
+	int i = 0; int x = 1; int z = 1;
+	char cstate[MAXLEN][MAXLEN];
 	while(1) {
-		printf("%i %i\n", x, z);
-		printf("%s\n", fsm.state[x][z]);
-		z++; 
+		xcls();
+		strcpy(cstate[i], fsm.state[x][z]);
+		printf("%s", cstate[0]);
+		//xsleep(fsm.delay);
+		z++;
 		if(strcmp(fsm.state[x][z], ".") == 0) {
 			x++;
 			z = 0;
@@ -109,7 +115,7 @@ void executeFSM(void) {
 			x++;
 			z = 0;
   		}
-  		if(x == 5) {
+  		if(x == fsm.transits + 1) {
   			break;
   		}
 	}
@@ -118,6 +124,7 @@ void executeFSM(void) {
 // DEBUG: Dump the loaded FSM internals
 void dumpFSM(void) {
 	printf("FSM sequence: %s", fsm.sequence);
+	printf("FSM transitions:%i", fsm.transits);
 	printf("\nFSM delay (ms): %i", fsm.delay);
 	printf("\nFSM repeat (1/0): %i\n", fsm.repeat);
 }
