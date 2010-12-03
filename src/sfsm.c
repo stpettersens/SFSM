@@ -64,34 +64,55 @@ void loadFSM(char *file) {
 
 // Parse the FSM script into the FSM structure
 void parseFSM(void) {
-	int counter = 0;
-	int i; int x = 1; int z = 0;
+	int i; int x = 1; int z = 1;
 	for(i = 0; i < numLines; i++) {
 		if(strcmp(lines[i], ":sequence") == 0) {
-			fsm.sequence = lines[i+1];
+			fsm.sequence = lines[++i];
 		}
 		else if(strcmp(lines[i], ":delay") == 0) {
-			fsm.delay = atoi(lines[i+1]);
+			fsm.delay = atoi(lines[++i]);
 		}
 		else if(strcmp(lines[i], ":repeat") == 0) {
-			fsm.repeat = atoi(lines[i+1]);
+			fsm.repeat = atoi(lines[++i]);
 		}
 		else if(strcmp(lines[i], ":state") == 0) {
 			i++;
-			while(1) {		
-				if(strcmp(lines[i], "") == 0) break;
-				if(strcmp(lines[i], ".") == 0) x++;
-				strcpy(fsm.state[x][z], lines[i]);
-				z++; i++; counter++;
+			while(1) {  
+  				strcpy(fsm.state[x][z], lines[i]);
+  				z++; i++;
+  				if(strcmp(lines[i], ".") == 0) {
+        			x++; 
+        			z = 0;
+  				}
+  				if(strcmp(lines[i], "") == 0) {
+        			break;
+  				}
 			}
 		}
 	}
+	printf("Test %s\n", fsm.state[2][0]);
 	executeFSM();
 }
 
 // Execute the FSM
 void executeFSM(void) {
-	printf("%s\n", fsm.state[2][6]);
+	int x = 1; int z = 1;
+	while(1) {
+		printf("%i %i\n", x, z);
+		printf("%s\n", fsm.state[x][z]);
+		z++; 
+		if(strcmp(fsm.state[x][z], ".") == 0) {
+			x++;
+			z = 0;
+		}
+		if(strcmp(fsm.state[x][z], "") == 0) {
+			x++;
+			z = 0;
+  		}
+  		if(x == 5) {
+  			break;
+  		}
+	}
 }
 
 // DEBUG: Dump the loaded FSM internals
